@@ -1,4 +1,5 @@
 #include <stdio.h>
+
 unsigned char AES_Mul(unsigned char a, unsigned char b) {
 	unsigned char result = 0;
 
@@ -18,6 +19,7 @@ unsigned char AES_Mul(unsigned char a, unsigned char b) {
 	}
 	return result;
 }
+
 void Func(unsigned char key[], unsigned char* x) {
 	unsigned char s[256] =
 	{
@@ -41,6 +43,7 @@ void Func(unsigned char key[], unsigned char* x) {
 	unsigned char a[4];
 	unsigned char b[4];
 	int i = 0;
+
 	for (i = 0;i < 4;i++) {
 		a[i] = key[i] ^ x[i];
 	}
@@ -48,18 +51,17 @@ void Func(unsigned char key[], unsigned char* x) {
 		b[i] = s[a[i]];
 	}
 
-
-
 	x[0] = AES_Mul(2, b[0]) ^ AES_Mul(3, b[1]) ^ b[2] ^ b[3];
 	x[1] = b[0] ^ AES_Mul(2, b[1]) ^ AES_Mul(3, b[2]) ^ b[3];
 	x[2] = b[0] ^ b[1] ^ AES_Mul(2, b[2]) ^ AES_Mul(3, b[3]);
 	x[3] = AES_Mul(3, b[0]) ^ b[1] ^ b[2] ^ AES_Mul(2, b[3]);
-	//printf("Æã  ");
+	//printf("ï¿½ï¿½  ");
 }
 
 void Round(unsigned char* key, unsigned char* x) {
 	unsigned char temp[16], temp2[4];
 	int i;
+
 	for (i = 0;i < 16;i++) {
 		temp[i] = x[i];
 	}
@@ -79,12 +81,12 @@ void Round(unsigned char* key, unsigned char* x) {
 	for (i = 0;i < 4;i++) {
 		x[i] = temp2[i] ^ temp[4 + i];
 	}
-
 }
 
 void Round2(unsigned char* key, unsigned char* x) {
 	unsigned char temp[16], temp2[4];
 	int i;
+
 	for (i = 0;i < 16;i++) {
 		temp[i] = x[i];
 	}
@@ -102,6 +104,7 @@ void Round2(unsigned char* key, unsigned char* x) {
 void Hash(int num, unsigned char* x, unsigned char* k, unsigned char* H) {
 	unsigned char key[4], arr[4];
 	int i, j;
+
 	for (i = 0;i < num - 1;i++) {
 		for (j = 0;j < 4;j++) {
 			key[j] = k[j];
@@ -115,12 +118,12 @@ void Hash(int num, unsigned char* x, unsigned char* k, unsigned char* H) {
 		arr[j] = i;
 	}
 
-
 	Round2(key, x);
 
 	for (i = 0;i < 16;i++)
 		H[i] = x[i];
 }
+
 int main() {
 	int s;
 	for (s = 1;s < 256;s++)
